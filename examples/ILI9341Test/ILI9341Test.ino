@@ -1,11 +1,12 @@
-#include <ILI9341_t3.h>
-#include <font_Arial.h> // from ILI9341_t3
+#include <Adafruit_GFX.h>
+#include <Adafruit_ILI9341.h>
 #include <XPT2046_Touchscreen.h>
 #include <SPI.h>
 
-#define CS_PIN  8
+#define CS_PIN  7
 #define TFT_DC  9
-#define TFT_CS 10
+#define TFT_CS -1
+#define TFT_RST 8
 // MOSI=11, MISO=12, SCK=13
 
 XPT2046_Touchscreen ts(CS_PIN);
@@ -14,10 +15,10 @@ XPT2046_Touchscreen ts(CS_PIN);
 //XPT2046_Touchscreen ts(CS_PIN, 255);  // Param 2 - 255 - No interrupts
 //XPT2046_Touchscreen ts(CS_PIN, TIRQ_PIN);  // Param 2 - Touch IRQ Pin - interrupt enabled polling
 
-ILI9341_t3 tft = ILI9341_t3(TFT_CS, TFT_DC);
+Adafruit_ILI9341 tft = Adafruit_ILI9341(&SPI, TFT_DC, TFT_CS, TFT_RST);
 
 void setup() {
-  Serial.begin(38400);
+  Serial.begin(115200);
   tft.begin();
   tft.setRotation(1);
   tft.fillScreen(ILI9341_BLACK);
@@ -35,13 +36,13 @@ void loop() {
     if (!wastouched) {
       tft.fillScreen(ILI9341_BLACK);
       tft.setTextColor(ILI9341_YELLOW);
-      tft.setFont(Arial_60);
+      tft.setTextSize(5);
       tft.setCursor(60, 80);
       tft.print("Touch");
     }
     tft.fillRect(100, 150, 140, 60, ILI9341_BLACK);
     tft.setTextColor(ILI9341_GREEN);
-    tft.setFont(Arial_24);
+    tft.setTextSize(2);
     tft.setCursor(100, 150);
     tft.print("X = ");
     tft.print(p.x);
@@ -56,7 +57,7 @@ void loop() {
     if (wastouched) {
       tft.fillScreen(ILI9341_BLACK);
       tft.setTextColor(ILI9341_RED);
-      tft.setFont(Arial_48);
+      tft.setTextSize(4);
       tft.setCursor(120, 50);
       tft.print("No");
       tft.setCursor(80, 120);

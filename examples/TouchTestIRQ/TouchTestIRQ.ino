@@ -1,7 +1,7 @@
 #include <XPT2046_Touchscreen.h>
 #include <SPI.h>
 
-#define CS_PIN  8
+#define CS_PIN  7
 // MOSI=11, MISO=12, SCK=13
 
 // The TIRQ interrupt signal must be used for this example.
@@ -9,7 +9,7 @@
 XPT2046_Touchscreen ts(CS_PIN, TIRQ_PIN);  // Param 2 - Touch IRQ Pin - interrupt enabled polling
 
 void setup() {
-  Serial.begin(38400);
+  Serial.begin(115200);
   ts.begin();
   ts.setRotation(1);
   while (!Serial && (millis() <= 1000));
